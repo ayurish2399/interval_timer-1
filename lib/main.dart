@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      title: 'Interval Timer',
       theme: ThemeData.dark().copyWith(
         primaryColor: Colors.lightGreenAccent[700],
         accentColor: Colors.greenAccent[400],

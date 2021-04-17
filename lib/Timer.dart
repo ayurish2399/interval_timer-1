@@ -1,3 +1,5 @@
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'constant.dart';
 import 'package:flutter/material.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
@@ -32,6 +34,29 @@ class _TimerState extends State<Timer> {
   int currentSetNumber = 1;
   List<String> mode = ['Starting in...', 'Workout Time', 'Take a Break'];
 
+  AudioPlayer audioplayer = AudioPlayer();
+  AudioPlayerState audioplayerstate = AudioPlayerState.PAUSED;
+  AudioCache audiocache = AudioCache();
+
+  @override
+  void initState() {
+    super.initState();
+    audiocache = AudioCache(fixedPlayer: audioplayer);
+    audioplayer.onPlayerStateChanged.listen((AudioPlayerState s) {
+      setState(() {
+        audioplayerstate = s;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    audioplayer.release();
+    audioplayer.dispose();
+    audiocache.clearCache();
+  }
+
   @override
   Widget build(BuildContext context) {
     int ttinSec = totalTimeinSeconds(
@@ -49,6 +74,9 @@ class _TimerState extends State<Timer> {
         width: MediaQuery.of(context).size.width / 2 + 50,
         height: MediaQuery.of(context).size.height / 2,
         fillColor: Colors.yellow[900],
+        onStart: () async {
+          await audiocache.play('Beep1.mpeg');
+        },
         onComplete: () {
           setState(() {
             if (workout == false && rest == false) {
@@ -58,7 +86,7 @@ class _TimerState extends State<Timer> {
             }
           });
         },
-        duration: 5,
+        duration: 4,
         ringColor: Color(0xff3F0090),
         controller: _controller,
         backgroundColor: Color(0xff3F0055),
@@ -83,6 +111,9 @@ class _TimerState extends State<Timer> {
         onComplete: () {
           if (workout == true && rest == false) {
             if (currentSetNumber < unit.sets) {
+              Future.delayed(Duration(milliseconds: 250), () {
+                audiocache.play('Beep2.mpeg');
+              });
               setState(() {
                 currentSetNumber++;
                 if (unit.breakHr == 0 &&
@@ -99,7 +130,10 @@ class _TimerState extends State<Timer> {
                 }
               });
             } else {
-              Navigator.pop(context);
+              audiocache.play('Beep3.mpeg');
+              Future.delayed(Duration(seconds: 1), () {
+                Navigator.pop(context);
+              });
             }
           }
         },
@@ -128,6 +162,9 @@ class _TimerState extends State<Timer> {
             hr: unit.breakHr, min: unit.breakMin, sec: unit.breakSec),
         onComplete: () {
           if (workout == false && rest == true) {
+            Future.delayed(Duration(milliseconds: 250), () {
+              audiocache.play('Beep4.mpeg');
+            });
             setState(() {
               ctr = 1;
               workout = true;
@@ -195,7 +232,7 @@ class _TimerState extends State<Timer> {
                     SizedBox(height: 15),
                     ListTile(
                       title: AnimatedSwitcher(
-                        duration: Duration(milliseconds: 1000),
+                        duration: Duration(milliseconds: 250),
                         child: Text(
                           '${mode[ctr]}'.toUpperCase(),
                           style: TextStyle(
@@ -209,7 +246,7 @@ class _TimerState extends State<Timer> {
                     SizedBox(height: 15),
                     ListTile(
                       title: Text(
-                        'Time Elapsed'.toUpperCase(),
+                        'Time Remaining'.toUpperCase(),
                         style: TextStyle(
                           fontSize: 25,
                           fontFamily: 'OverPass',
