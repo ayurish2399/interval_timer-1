@@ -53,9 +53,18 @@ class _SetTimerState extends State<SetTimer> {
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                title: Text('Empty value'),
+                                title: Text(
+                                  'Empty value'.toUpperCase(),
+                                  style: TextStyle(
+                                      fontFamily: 'OverPass',
+                                      fontWeight: FontWeight.w400,
+                                      letterSpacing: 1.2),
+                                ),
                                 content: Text(
-                                  'Time For Workout cannot be empty',
+                                  'Time For Workout cannot be empty. ',
+                                  style: TextStyle(
+                                      fontFamily: 'OverPass',
+                                      fontWeight: FontWeight.w500),
                                 ),
                                 actions: [
                                   TextButton(
