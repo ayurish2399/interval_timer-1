@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//for creating roundbutton
 class RoundButton extends StatelessWidget {
   RoundButton({@required this.icon, @required this.onPressed});
   final IconData icon;
@@ -17,6 +18,7 @@ class RoundButton extends StatelessWidget {
   }
 }
 
+// for time units
 class TimerUnits {
   int hr;
   int min;
@@ -36,12 +38,14 @@ class TimerUnits {
       @required this.sets});
 }
 
+//Calculates total time in seconds
 int totalTimeinSeconds(
     {int hr, int min, int sec, int bHr, int bMin, int bSec, int sets}) {
   return ((hr + bHr) * 3600 + (bMin + min) * 60 + (sec + bSec)) * sets -
       (bHr * 3600 + bMin * 60 + bSec);
 }
 
+// Use to format remaining timer
 String formatTimer({int timeForTimer}) {
   String timetoDisplay;
   if (timeForTimer < 60) {
@@ -73,6 +77,7 @@ String formatTimer({int timeForTimer}) {
   return timetoDisplay;
 }
 
+// Used to show progress
 String progress({double timeForTimer, double totalTime}) {
   double progress;
   if (((totalTime - timeForTimer) / totalTime) <= 0 ||
@@ -85,6 +90,7 @@ String progress({double timeForTimer, double totalTime}) {
   return '${progress.toInt()} ' + '%';
 }
 
+// use to calculate individual time in seconds
 int timeInSeconds({int hr, int min, int sec}) {
   return hr * 3600 + min * 60 + sec;
 }

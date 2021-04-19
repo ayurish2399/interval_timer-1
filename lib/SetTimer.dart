@@ -48,14 +48,35 @@ class _SetTimerState extends State<SetTimer> {
                           breakMin: breakMin,
                           breakSec: breakSec,
                           sets: sets);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Timer(
-                            unit: u,
+                      if (hr == 0 && min == 0 && sec == 0) {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text('Empty value'),
+                                content: Text(
+                                  'Time For Workout cannot be empty',
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text('Okay'),
+                                  ),
+                                ],
+                              );
+                            });
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Timer(
+                              unit: u,
+                            ),
                           ),
-                        ),
-                      );
+                        );
+                      }
                     }),
                 SizedBox(width: 11),
                 RoundButton(
