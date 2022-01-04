@@ -1,6 +1,7 @@
 # interval_timer
 
-A new Flutter project.
+![Picture1](https://user-images.githubusercontent.com/48116105/148002041-64c380e9-55ae-414b-ad23-4298795680a8.jpg)
+
 
 ## Getting Started
 
